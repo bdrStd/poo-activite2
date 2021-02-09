@@ -47,10 +47,18 @@ class Personnage
  
      }
      if($this->_nbCoup >= 3)
-     {
+     {  
+     
        if($this->_dateCoup == date('Y-m-d'))
        {
          echo 'vous devez attendre demain pour rejouer';
+         
+       }
+       else
+       {
+         $this->_nbCoup = 0;
+         
+        
        }
      }
      
@@ -60,13 +68,8 @@ class Personnage
   {
    
     $this->_nbCoup++;
-    if($this->_nbCoup == 3)
-    {
-      // $this->_niveau++;
-      // $this->_experience = 0;
-      // $this->gagneNiveau();
-
-    }
+    $this->_dateCoup = date('Y-m-d');
+    
   }
 
   public function gagneExperience()
