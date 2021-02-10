@@ -27,7 +27,8 @@ class PersonnagesRepository
         'niveau' => 0,
         'strength' => 5,
         'nbCoup' => 0,
-        'dateCoup' =>date('Y-m-d')
+        'dateCoup' =>date('Y-m-d'),
+        'dateCo' => date('Y-m-d H-m-s')
       ]);
   }
   
@@ -104,6 +105,7 @@ class PersonnagesRepository
      $q = $this->_db->prepare('UPDATE personnages SET degats = :degats, experience = :experience, niveau = :niveau, strength= :strength, nbCoup = :nbCoup, dateCoup = :dateCoup  WHERE id = :id' );
     // $q = $this->_db->prepare('UPDATE personnages SET degats = :degats WHERE id = :id' );
     // Assignation des valeurs à la requête.
+    $q->bindValue(':dateCoup', $perso->dateCoup(), PDO::PARAM_STR);
     $q->bindValue(':dateCoup', $perso->dateCoup(), PDO::PARAM_STR);
     $q->bindValue(':nbCoup', $perso->nbCoup(), PDO::PARAM_INT);
     $q->bindValue(':strength', $perso->strength(), PDO::PARAM_INT);

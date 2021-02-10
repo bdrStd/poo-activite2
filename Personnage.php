@@ -9,6 +9,7 @@ class Personnage
   protected $_strength;
   protected $_nbCoup;
   protected $_dateCoup;
+  protected $_dateCo;
 
   const CEST_MOI = 1; // Constante renvoyée par la méthode `frapper` si on se frappe soi-même.
   const PERSONNAGE_TUE = 2; // Constante renvoyée par la méthode `frapper` si on a tué le personnage en le frappant.
@@ -43,6 +44,7 @@ class Personnage
      {
       $this->gagneExperience();
       $this->donneCoup();
+      //$this->recupererVie();
      return $perso->recevoirDegats($this->_strength);
  
      }
@@ -56,7 +58,7 @@ class Personnage
        }
        else
        {
-         $this->_nbCoup = 0;
+         $this->setNbCoup(0);
          
         
        }
@@ -68,14 +70,15 @@ class Personnage
   {
    
     $this->_nbCoup++;
-    $this->_dateCoup = date('Y-m-d');
+    //$this->_dateCoup = date('Y-m-d');
+    $this->setDateCoup(date('Y-m-d'));
     
   }
 
   public function gagneExperience()
   {
    
-    $this->_experience += 10;
+    $this->setExperience($this->_experience += 10);
     if($this->_experience == 100)
     {
       // $this->_niveau++;
@@ -87,24 +90,30 @@ class Personnage
   }
   public function gagneStrength()
   {
-      $this->_strength += 5;
+      $this->setStrength($this->_strength += 5);
+
   }
 
   public function gagneNiveau()
   {
-      $this->_niveau++;
-      $this->_experience = 0;
+      $this->setNiveau($this->_niveau++);
+      //$this->_experience = 0;
+      $this->setExperience(0);
       $this->gagneStrength();
   }
 
   public function recupererVie()
   {
-    if($this->_dateCoup > date('Y-m-d') && ($this->_degats < 100))
+    if($this->_dateCo < date('Y-m-d') && ($this->_degats < 100))
     {
-        $this->_degats -= 10;
+        if($this->_degats >= 10){
+          $this->setDegats($this->_degats -= 10);
+          $this->setDateCo($this->_dateCo = date('Y-m-d'));
+        }
     }
   }
-
+//On hydrate l'objet en passant par les setters; ucfirst met le premier caractere en Maj.
+//method_exists veridie que la methode existe.
   public function hydrate(array $donnees)
   {
     foreach ($donnees as $key => $value)
@@ -121,7 +130,9 @@ class Personnage
   public function recevoirDegats($strength)
   {
     // On augmente de 5 les dégâts.
-    $this->_degats += $strength;
+    //$this->_degats += $strength;
+    //modification pour passer par les setters
+    $this->setDegats($this->_degats += $strength);
     // Si on a 100 de dégâts ou plus, la méthode renverra une valeur signifiant que le personnage a été tué.
     if ($this->_degats >= 100)
     {
@@ -132,6 +143,12 @@ class Personnage
   }
 
    // GETTERS //
+
+   public function dateCo()
+   {
+     return $this->_dateCo;
+   }
+
    public function dateCoup()
    {
      return $this->_dateCoup;
@@ -175,6 +192,16 @@ class Personnage
    }
 
    //SETTERS
+   public function setDateCo($dateCo)
+   {
+    $dateCo =  $dateCo;
+     
+     if ($dateCo >= 0)
+     {
+       $this->_dateCo = $dateCo;
+     }
+   }
+
    public function setDateCoup($dateCoup)
    {
     $dateCoup =  $dateCoup;

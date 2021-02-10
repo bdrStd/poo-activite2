@@ -52,6 +52,7 @@ elseif (isset($_POST['utiliser']) && isset($_POST['nom'])) // Si on a voulu util
   if ($repository->exists($_POST['nom'])) // Si celui-ci existe.
   {
     $perso = $repository->get($_POST['nom']);
+    $perso->recupererVie();
   }
   else
   {
@@ -135,6 +136,7 @@ if (isset($perso)) // Si on utilise un personnage (nouveau ou pas).
         Force : <?= $perso->strength() ?> <br/>
         Nombre de coup: <?= $perso->nbCoup() ?> <br/>
         Date du coup: <?= $perso->dateCoup() ?> <br/>
+        Date de la connexion <?= $perso->dateCo() ?> <br/>
       </p>
     </fieldset>
     
